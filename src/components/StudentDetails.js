@@ -2,14 +2,14 @@ import React, {useContext, useEffect} from 'react';
 import {useParams} from 'react-router-dom'
 import {StudentServiceContext} from "../api/StudentService";
 import {connect} from "react-redux";
-import {currentStudentLoaded, currentStudentLoadError, currentStudentLoading} from "../actions/StudentActions";
+import {currentStudentLoad} from "../actions/StudentActions";
 
 const StudentDetails = (props) => {
   const {
     // state
     currentStudent, loading, error,
     // actions
-    currentStudentLoading, currentStudentLoadError, currentStudentLoaded
+    currentStudentLoad,
   } = props;
 
   // get studentId from url path
@@ -17,18 +17,7 @@ const StudentDetails = (props) => {
   const studentService = useContext(StudentServiceContext)
 
   useEffect(() => {
-    // dispatch action
-    currentStudentLoading();
-
-    studentService.getStudentById(studentId)
-      .then(data => {
-        // dispatch action
-        currentStudentLoaded(data);
-      })
-      .catch(() => {
-        // dispatch action
-        return currentStudentLoadError();
-      });
+    currentStudentLoad(studentService, studentId);
   }, []);
 
   let content = null;
@@ -67,7 +56,5 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(mapStateToProps, {
-  currentStudentLoading,
-  currentStudentLoaded,
-  currentStudentLoadError
+  currentStudentLoad,
 })(StudentDetails);

@@ -3,7 +3,7 @@ import {StudentServiceContext} from "../api/StudentService";
 import {Link, useHistory} from "react-router-dom";
 import {connect} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {studentsLoaded, studentsLoadError, studentsLoading} from "../actions/StudentActions";
+import {studentDelete, studentsLoad} from "../actions/StudentActions";
 import {faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 
 // 'state' and 'dispatch' are mapped to props by react redux 'connect' function call
@@ -12,7 +12,7 @@ const StudentList = (props) => {
     // state
     students, loading, error,
     // actions
-    studentsLoading, studentsLoaded, studentsLoadError
+    studentsLoad, studentDelete
   } = props;
 
   // use context hook to get CRUD API service
@@ -21,45 +21,17 @@ const StudentList = (props) => {
   // use react router history hook to get navigation 'history' object
   const history = useHistory();
 
-  function loadStudents() {
-    // dispatch loading action
-    studentsLoading();
-
-    studentService
-      .getStudents()
-      .then(data => {
-        // dispatch load success action with students payload
-        return studentsLoaded(data);
-      })
-      .catch(error => {
-        console.log(`zavanton - error: ${error}`);
-        // dispatch error action
-        studentsLoadError()
-      });
-  }
-
   // use effect hook to fetch students from API as the component is shown
   useEffect(() => {
-    loadStudents();
-  }, [])
+    // dispatch a thunk
+    studentsLoad(studentService);
+  }, []);
 
   // navigate to edit student screen
   const onStudentEdit = (studentId) => history.push(`/edit/${studentId}`)
 
-  // delete student and reload students
-  const onStudentDelete = (studentId) => {
-    studentService.deleteStudent(studentId)
-      .then(response => {
-        if (response.status === 204) {
-          loadStudents();
-        }
-      })
-      .catch(error => {
-        console.log(`zavanton - error: ${error}`);
-        // dispatch error action
-        studentsLoadError()
-      });
-  }
+  // delete student and reload students via a thunk
+  const onStudentDelete = (studentId) => studentDelete(studentService, studentId);
 
   // render contents
   let content = null;
@@ -114,7 +86,6 @@ const mapStateToProps = (state) => ({
 // react redux 'connect' function
 // provides state and actions to this component via props
 export default connect(mapStateToProps, {
-  studentsLoading,
-  studentsLoaded,
-  studentsLoadError
+  studentsLoad,
+  studentDelete
 })(StudentList);
