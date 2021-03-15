@@ -5,6 +5,7 @@ const initialState = {
   loading: false
 }
 
+// reducer for the 'students' substate
 export const StudentReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'STUDENTS_LOADING':
@@ -51,27 +52,6 @@ export const StudentReducer = (state = initialState, action) => {
         currentStudent: null,
         loading: false,
         error: true
-      };
-
-    case 'ADD_STUDENT_IN_PROGRESS':
-      return {
-        ...state,
-        loading: true,
-        error: false
-      }
-
-    case 'ADD_STUDENT_ERROR':
-      return {
-        ...state,
-        loading: false,
-        error: true
-      }
-
-    case 'ADD_STUDENT_SUCCESS':
-      return {
-        ...state,
-        loading: false,
-        error: false
       };
 
     default:

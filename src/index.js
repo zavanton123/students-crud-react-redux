@@ -10,6 +10,7 @@ import thunk from "redux-thunk";
 import {Provider} from "react-redux";
 import ErrorBoundary from "./error/ErrorBoundary";
 
+// CRUD API service (passed to components via context)
 const studentService = new StudentService();
 
 // enable Redux DevTools
@@ -23,11 +24,15 @@ const composeEnhancers =
 const enhancer = composeEnhancers(
   applyMiddleware(thunk),
 );
+
+// create redux store
 const store = createStore(reducer, enhancer);
 
 ReactDOM.render(
   <ErrorBoundary>
+    {/* provide store to components */}
     <Provider store={store}>
+      {/* provide api service to components*/}
       <StudentServiceContext.Provider value={studentService}>
         <Router>
           <App/>

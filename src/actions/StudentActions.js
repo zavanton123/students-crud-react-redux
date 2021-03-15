@@ -23,18 +23,3 @@ export const currentStudentLoaded = (student) => ({
 export const currentStudentLoadError = () => ({
   type: 'CURRENT_STUDENT_LOAD_ERROR',
 })
-
-export const addStudentInProgress = () => ({
-  type: 'ADD_STUDENT_IN_PROGRESS'
-})
-
-export const addStudentSuccess = () => ({
-  type: 'ADD_STUDENT_SUCCESS'
-})
-
-export const addStudentError = () => ({
-  type: 'ADD_STUDENT_ERROR'
-})
-
-
-
