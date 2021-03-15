@@ -6,17 +6,23 @@ export const AddStudent = () => {
   const studentService = useContext(StudentServiceContext);
   const history = useHistory();
 
+  // form data should not be passed to redux state
+  // it is saved locally via useState hooks
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gpa, setGpa] = useState(0.0);
   const [error, setError] = useState();
 
+  // input field callbacks
   const onFirstNameChange = (event) => setFirstName(event.target.value);
   const onLastNameChange = (event) => setLastName(event.target.value)
   const onGpaChange = (event) => setGpa(event.target.value)
 
+  // submit form callback
   const onSubmit = (event) => {
+    // cancel page reloading
     event.preventDefault();
+
     studentService.addStudent(createStudent())
       .then(response => {
         if (response.status === 201) {
@@ -26,7 +32,7 @@ export const AddStudent = () => {
         }
       })
       .catch(error => setError(error));
-  }
+  };
 
   const createStudent = () => ({
     first_name: firstName,
@@ -34,6 +40,7 @@ export const AddStudent = () => {
     gpa: gpa
   });
 
+  // render page
   let errorMessage;
   if (error) {
     errorMessage = <h3>Failed to add student!</h3>;

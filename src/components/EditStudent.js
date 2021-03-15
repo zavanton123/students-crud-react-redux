@@ -3,16 +3,17 @@ import {StudentServiceContext} from "../api/StudentService";
 import {useHistory, useParams} from "react-router-dom";
 
 export const EditStudent = () => {
+  // local state (not redux store)
   const [id, setId] = useState();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gpa, setGpa] = useState(0.0);
   const [error, setError] = useState();
 
+  // use some hooks
   const studentService = useContext(StudentServiceContext);
   const history = useHistory();
   const {studentId} = useParams();
-  console.log(`zavanton - studentId: ${studentId}`);
 
   useEffect(() => {
     studentService.getStudentById(studentId)
@@ -34,6 +35,7 @@ export const EditStudent = () => {
 
     studentService.updateStudent(createStudent())
       .then(response => {
+        // navigate to students list on success
         if (response.status == 200) {
           history.push('/');
         } else {

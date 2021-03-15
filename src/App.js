@@ -10,6 +10,8 @@ function App() {
   return (
     <>
       <Header/>
+
+      {/* this is dynamic navigation implemented by react router library */}
       <Switch>
         <Route exact path="/" component={StudentList}/>
         <Route exact path="/add" component={AddStudent}/>

@@ -6,20 +6,29 @@ import {currentStudentLoaded, currentStudentLoadError, currentStudentLoading} fr
 
 const StudentDetails = (props) => {
   const {
-    currentStudent, loading, error, currentStudentLoading,
-    currentStudentLoadError, currentStudentLoaded
+    // state
+    currentStudent, loading, error,
+    // actions
+    currentStudentLoading, currentStudentLoadError, currentStudentLoaded
   } = props;
 
+  // get studentId from url path
   const {studentId} = useParams();
   const studentService = useContext(StudentServiceContext)
 
   useEffect(() => {
+    // dispatch action
     currentStudentLoading();
+
     studentService.getStudentById(studentId)
       .then(data => {
+        // dispatch action
         currentStudentLoaded(data);
       })
-      .catch(() => currentStudentLoadError())
+      .catch(() => {
+        // dispatch action
+        return currentStudentLoadError();
+      });
   }, []);
 
   let content = null;

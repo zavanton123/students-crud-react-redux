@@ -1,3 +1,4 @@
+// these are action creators
 export const studentsLoading = () => ({
   type: 'STUDENTS_LOADING'
 })
