@@ -15,7 +15,7 @@ export default class StudentService {
   }
 
   getStudentById(studentId) {
-    return axios.get(`${this._host}/students/${studentId}`)
+    return axios.get(`${this._host}/students/${studentId}/`)
       .then(response => response.data);
   }
 
@@ -24,6 +24,10 @@ export default class StudentService {
   }
 
   deleteStudent(studentId) {
-    return axios.delete(`${this._host}/students/${studentId}`);
+    return axios.delete(`${this._host}/students/${studentId}/`);
+  }
+
+  updateStudent(student) {
+    return axios.put(`${this._host}/students/${student.id}/`, student)
   }
 }

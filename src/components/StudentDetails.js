@@ -17,8 +17,6 @@ const StudentDetails = (props) => {
     currentStudentLoading();
     studentService.getStudentById(studentId)
       .then(data => {
-        console.log(`zavanton - student data`);
-        console.log(data);
         currentStudentLoaded(data);
       })
       .catch(() => currentStudentLoadError())
