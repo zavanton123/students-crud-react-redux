@@ -1,10 +1,10 @@
 import React from 'react';
-import {EditStudent} from "./components/EditStudent";
+import {EditStudent} from "../components/EditStudent";
 import {Route, Switch} from 'react-router-dom'
-import Header from "./components/Header";
-import StudentList from "./components/StudentList";
-import StudentDetails from "./components/StudentDetails";
-import {AddStudent} from "./components/AddStudent";
+import Header from "../components/Header";
+import StudentList from "../components/StudentList";
+import StudentDetails from "../components/StudentDetails";
+import {AddStudent} from "../components/AddStudent";
 
 function App() {
   return (
