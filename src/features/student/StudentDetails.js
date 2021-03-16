@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useParams} from 'react-router-dom'
 import {connect} from "react-redux";
-import {currentStudentLoad} from "../actions/StudentActions";
+import {currentStudentLoad} from "../../actions/StudentActions";
 
 const StudentDetails = (props) => {
   const {

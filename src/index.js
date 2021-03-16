@@ -10,7 +10,7 @@ import {store} from "./app/Store";
 
 ReactDOM.render(
   <ErrorBoundary>
-    {/* provide store to components */}
+    {/* provide store to features */}
     <Provider store={store}>
       <Router>
         <App/>

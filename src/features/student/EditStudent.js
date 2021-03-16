@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getStudentById, updateStudent} from "../api/StudentService";
+import {getStudentById, updateStudent} from "../../api/StudentService";
 import {useHistory, useParams} from "react-router-dom";
 
 export const EditStudent = () => {

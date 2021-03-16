@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {addStudent} from "../api/StudentService";
+import {addStudent} from "../../api/StudentService";
 import {useHistory} from 'react-router-dom'
 
 export const AddStudent = () => {

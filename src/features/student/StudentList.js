@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Link, useHistory} from "react-router-dom";
 import {connect} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {studentDelete, studentsLoad} from "../actions/StudentActions";
+import {studentDelete, studentsLoad} from "../../actions/StudentActions";
 import {faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 
 // 'state' and 'dispatch' are mapped to props by react redux 'connect' function call
