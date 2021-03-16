@@ -1,8 +1,10 @@
 // this is a thunk
-export const studentsLoad = (studentService) => async (dispatch) => {
+import {deleteStudent, getStudentById, getStudents} from "../api/StudentService";
+
+export const studentsLoad = () => async (dispatch) => {
   try {
     dispatch(studentsLoading());
-    const students = await studentService.getStudents();
+    const students = await getStudents();
     dispatch(studentsLoaded(students));
   } catch (error) {
     dispatch(studentsLoadError());
@@ -10,11 +12,11 @@ export const studentsLoad = (studentService) => async (dispatch) => {
 }
 
 // this is also a thunk
-export const studentDelete = (studentService, studentId) => async (dispatch) => {
+export const studentDelete = (studentId) => async (dispatch) => {
   try {
-    const response = await studentService.deleteStudent(studentId);
+    const response = await deleteStudent(studentId);
     if (response.status === 204) {
-      dispatch(studentsLoad(studentService));
+      dispatch(studentsLoad());
     }
   } catch (error) {
     dispatch(studentsLoadError());
@@ -22,10 +24,10 @@ export const studentDelete = (studentService, studentId) => async (dispatch) => 
 }
 
 // one more thunk
-export const currentStudentLoad = (studentService, studentId) => async (dispatch) => {
+export const currentStudentLoad = (studentId) => async (dispatch) => {
   dispatch(currentStudentLoading());
   try {
-    const data = await studentService.getStudentById(studentId);
+    const data = await getStudentById(studentId);
     dispatch(currentStudentLoaded(data));
   } catch (error) {
     dispatch(currentStudentLoadError());

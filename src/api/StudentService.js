@@ -1,33 +1,25 @@
-import React from 'react';
 import axios from "axios";
 
-export const StudentServiceContext = React.createContext();
+const BASE_HOST = "http://127.0.0.1:9999/evolunta";
 
-export default class StudentService {
+export const getStudents = () => {
+  return axios.get(`${BASE_HOST}/students/`)
+    .then(response => response.data);
+}
 
-  constructor() {
-    this._host = "http://127.0.0.1:9999/evolunta";
-  }
+export const getStudentById = (studentId) => {
+  return axios.get(`${BASE_HOST}/students/${studentId}/`)
+    .then(response => response.data);
+}
 
-  getStudents() {
-    return axios.get(`${this._host}/students/`)
-      .then(response => response.data);
-  }
+export const addStudent = (student) => {
+  return axios.post(`${BASE_HOST}/students/`, student);
+}
 
-  getStudentById(studentId) {
-    return axios.get(`${this._host}/students/${studentId}/`)
-      .then(response => response.data);
-  }
+export const deleteStudent = (studentId) => {
+  return axios.delete(`${BASE_HOST}/students/${studentId}/`);
+}
 
-  addStudent(student) {
-    return axios.post(`${this._host}/students/`, student);
-  }
-
-  deleteStudent(studentId) {
-    return axios.delete(`${this._host}/students/${studentId}/`);
-  }
-
-  updateStudent(student) {
-    return axios.put(`${this._host}/students/${student.id}/`, student)
-  }
+export const updateStudent = (student) => {
+  return axios.put(`${BASE_HOST}/students/${student.id}/`, student)
 }

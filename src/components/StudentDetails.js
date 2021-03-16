@@ -1,6 +1,5 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useParams} from 'react-router-dom'
-import {StudentServiceContext} from "../api/StudentService";
 import {connect} from "react-redux";
 import {currentStudentLoad} from "../actions/StudentActions";
 
@@ -14,10 +13,9 @@ const StudentDetails = (props) => {
 
   // get studentId from url path
   const {studentId} = useParams();
-  const studentService = useContext(StudentServiceContext)
 
   useEffect(() => {
-    currentStudentLoad(studentService, studentId);
+    currentStudentLoad(studentId);
   }, []);
 
   let content = null;

@@ -1,9 +1,8 @@
-import React, {useContext, useState} from 'react';
-import {StudentServiceContext} from "../api/StudentService";
+import React, {useState} from 'react';
+import {addStudent} from "../api/StudentService";
 import {useHistory} from 'react-router-dom'
 
 export const AddStudent = () => {
-  const studentService = useContext(StudentServiceContext);
   const history = useHistory();
 
   // form data should not be passed to redux state
@@ -23,7 +22,7 @@ export const AddStudent = () => {
     // cancel page reloading
     event.preventDefault();
 
-    studentService.addStudent(createStudent())
+    addStudent(createStudent())
       .then(response => {
         if (response.status === 201) {
           history.push('/');

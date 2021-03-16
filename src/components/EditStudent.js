@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {StudentServiceContext} from "../api/StudentService";
+import React, {useEffect, useState} from 'react';
+import {getStudentById, updateStudent} from "../api/StudentService";
 import {useHistory, useParams} from "react-router-dom";
 
 export const EditStudent = () => {
@@ -11,12 +11,11 @@ export const EditStudent = () => {
   const [error, setError] = useState();
 
   // use some hooks
-  const studentService = useContext(StudentServiceContext);
   const history = useHistory();
   const {studentId} = useParams();
 
   useEffect(() => {
-    studentService.getStudentById(studentId)
+    getStudentById(studentId)
       .then(student => {
         setId(student.id);
         setFirstName(student.first_name);
@@ -33,7 +32,7 @@ export const EditStudent = () => {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    studentService.updateStudent(createStudent())
+    updateStudent(createStudent())
       .then(response => {
         // navigate to students list on success
         if (response.status == 200) {

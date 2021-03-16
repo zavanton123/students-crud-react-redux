@@ -1,5 +1,4 @@
-import React, {useContext, useEffect} from 'react';
-import {StudentServiceContext} from "../api/StudentService";
+import React, {useEffect} from 'react';
 import {Link, useHistory} from "react-router-dom";
 import {connect} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -15,23 +14,20 @@ const StudentList = (props) => {
     studentsLoad, studentDelete
   } = props;
 
-  // use context hook to get CRUD API service
-  const studentService = useContext(StudentServiceContext);
-
   // use react router history hook to get navigation 'history' object
   const history = useHistory();
 
   // use effect hook to fetch students from API as the component is shown
   useEffect(() => {
     // dispatch a thunk
-    studentsLoad(studentService);
+    studentsLoad();
   }, []);
 
   // navigate to edit student screen
   const onStudentEdit = (studentId) => history.push(`/edit/${studentId}`)
 
   // delete student and reload students via a thunk
-  const onStudentDelete = (studentId) => studentDelete(studentService, studentId);
+  const onStudentDelete = (studentId) => studentDelete(studentId);
 
   // render contents
   let content = null;
