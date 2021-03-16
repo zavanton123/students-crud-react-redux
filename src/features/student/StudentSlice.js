@@ -1,12 +1,19 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createEntityAdapter, createSlice} from "@reduxjs/toolkit";
 import {deleteStudent, getStudentById, getStudents} from "../../api/StudentService";
 
-const initialState = {
+// Entity adapter is used for normalising state
+// the empty state is {
+//     id: [],
+//     entitites: {}
+// }
+const adapter = createEntityAdapter();
+
+// we get the initial state from adapter
+const initialState = adapter.getInitialState({
   currentStudent: null,
-  students: [],
   error: false,
   loading: false
-}
+});
 
 // Create an asynchronous thunk
 export const studentsLoad = createAsyncThunk('students/load', async () => {
@@ -18,7 +25,7 @@ export const studentsLoad = createAsyncThunk('students/load', async () => {
 export const studentDelete = createAsyncThunk('student/delete', async studentId => {
   const response = await deleteStudent(studentId);
   if (response.status === 204) {
-    return getStudents();
+    return studentId;
   } else {
     throw new Error("The status code is not 204")
   }
@@ -34,36 +41,7 @@ export const currentStudentLoad = createAsyncThunk('currentStudent/load', async 
 export const studentSlice = createSlice({
   name: 'students',
   initialState: initialState,
-  reducers: {
-    studentsLoading(state, action) {
-      state.loading = true;
-      state.error = false;
-    },
-    studentsLoaded(state, action) {
-      state.loading = false;
-      state.error = false;
-      state.students = action.payload
-    },
-    studentsLoadError(state, action) {
-      state.loading = false;
-      state.error = true;
-    },
-    currentStudentLoading(state, action) {
-      state.currentStudent = null;
-      state.loading = true;
-      state.error = false;
-    },
-    currentStudentLoaded(state, action) {
-      state.currentStudent = action.payload;
-      state.loading = false;
-      state.error = false;
-    },
-    currentStudentLoadError(state, action) {
-      state.currentStudent = null;
-      state.loading = false;
-      state.error = true;
-    }
-  },
+  reducers: {},
   extraReducers: {
     [studentsLoad.pending]: (state, action) => {
       state.loading = true;
@@ -72,7 +50,9 @@ export const studentSlice = createSlice({
     [studentsLoad.fulfilled]: (state, action) => {
       state.loading = false;
       state.error = false;
-      state.students = action.payload
+
+      // the state is updated via adapter
+      adapter.upsertMany(state, action.payload);
     },
     [studentsLoad.rejected]: (state, action) => {
       state.loading = false;
@@ -81,7 +61,9 @@ export const studentSlice = createSlice({
     [studentDelete.fulfilled]: (state, action) => {
       state.loading = false;
       state.error = false;
-      state.students = action.payload
+
+      // the state is updated via adapter
+      adapter.removeOne(state, action.payload);
     },
     [currentStudentLoad.pending]: (state, action) => {
       state.loading = true;
@@ -104,14 +86,9 @@ export const studentSlice = createSlice({
 // export reducer
 export const studentReducer = studentSlice.reducer;
 
-// export actions
-export const {
-  studentsLoading, studentsLoaded, studentsLoadError,
-  currentStudentLoading, currentStudentLoaded, currentStudentLoadError
-} = studentSlice.actions;
-
 // export selectors (i.e. parts of slice state)
+// we get some of the selectors from adapter
+export const {selectAll: getStudentsSelector} = adapter.getSelectors(state => state.students);
 export const getLoadingSelector = (state) => state.students.loading;
 export const getErrorSelector = (state) => state.students.error;
 export const getCurrentStudentSelector = (state) => state.students.currentStudent;
-export const getStudentsSelector = (state) => state.students.students;
