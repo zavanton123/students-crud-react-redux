@@ -1,18 +1,18 @@
 import React, {useEffect} from 'react';
 import {Link, useHistory} from "react-router-dom";
-import {connect} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {studentDelete, studentsLoad} from "../../actions/StudentActions";
 import {faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import {useDispatch, useSelector} from "react-redux";
+import {getErrorSelector, getLoadingSelector, getStudentsSelector, studentDelete, studentsLoad} from "../StudentSlice";
 
-// 'state' and 'dispatch' are mapped to props by react redux 'connect' function call
-const StudentList = (props) => {
-  const {
-    // state
-    students, loading, error,
-    // actions
-    studentsLoad, studentDelete
-  } = props;
+export const StudentList = () => {
+  // get dispatch via hook
+  const dispatch = useDispatch();
+
+  // get selectors via hooks
+  const students = useSelector(getStudentsSelector);
+  const loading = useSelector(getLoadingSelector);
+  const error = useSelector(getErrorSelector);
 
   // use react router history hook to get navigation 'history' object
   const history = useHistory();
@@ -20,14 +20,14 @@ const StudentList = (props) => {
   // use effect hook to fetch students from API as the component is shown
   useEffect(() => {
     // dispatch a thunk
-    studentsLoad();
+    dispatch(studentsLoad());
   }, []);
 
   // navigate to edit student screen
   const onStudentEdit = (studentId) => history.push(`/edit/${studentId}`)
 
   // delete student and reload students via a thunk
-  const onStudentDelete = (studentId) => studentDelete(studentId);
+  const onStudentDelete = (studentId) => dispatch(studentDelete(studentId));
 
   // render contents
   let content = null;
@@ -71,17 +71,4 @@ const StudentList = (props) => {
       </div>
     </>
   );
-}
-
-const mapStateToProps = (state) => ({
-  students: state.students.students,
-  loading: state.students.loading,
-  error: state.students.error
-})
-
-// react redux 'connect' function
-// provides state and actions to this component via props
-export default connect(mapStateToProps, {
-  studentsLoad,
-  studentDelete
-})(StudentList);
+};

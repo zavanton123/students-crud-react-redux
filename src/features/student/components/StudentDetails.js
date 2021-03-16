@@ -1,21 +1,20 @@
 import React, {useEffect} from 'react';
 import {useParams} from 'react-router-dom'
-import {connect} from "react-redux";
-import {currentStudentLoad} from "../../actions/StudentActions";
+import {useDispatch, useSelector} from "react-redux";
+import {currentStudentLoad, getCurrentStudentSelector, getErrorSelector, getLoadingSelector} from "../StudentSlice";
 
-const StudentDetails = (props) => {
-  const {
-    // state
-    currentStudent, loading, error,
-    // actions
-    currentStudentLoad,
-  } = props;
+export const StudentDetails = () => {
+  const dispatch = useDispatch();
+
+  const currentStudent = useSelector(getCurrentStudentSelector);
+  const loading = useSelector(getLoadingSelector);
+  const error = useSelector(getErrorSelector);
 
   // get studentId from url path
   const {studentId} = useParams();
 
   useEffect(() => {
-    currentStudentLoad(studentId);
+    dispatch(currentStudentLoad(studentId));
   }, []);
 
   let content = null;
@@ -46,13 +45,3 @@ const StudentDetails = (props) => {
     </>
   );
 }
-
-const mapStateToProps = (state) => ({
-  currentStudent: state.students.currentStudent,
-  loading: state.students.loading,
-  error: state.students.error
-})
-
-export default connect(mapStateToProps, {
-  currentStudentLoad,
-})(StudentDetails);

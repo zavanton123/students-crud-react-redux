@@ -1,8 +1,7 @@
-import React from 'react';
 import {configureStore} from "@reduxjs/toolkit";
-import {StudentReducer} from "../reducers/StudentReducer";
 import {applyMiddleware, compose} from "redux";
 import thunk from "redux-thunk";
+import {studentReducer} from "../features/student/StudentSlice";
 
 // enable Redux DevTools
 const composeEnhancers =
@@ -16,10 +15,11 @@ const enhancer = composeEnhancers(
   applyMiddleware(thunk),
 );
 
-
+// configureStore is from redux-toolkit package
+// the general state is broken into separate states
 export const store = configureStore({
   reducer: {
-    students: StudentReducer
+    students: studentReducer
   },
   enhancer: enhancer
 })
